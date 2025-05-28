@@ -7,7 +7,7 @@ import { TagsModule } from './tags/tags.module';
 import { PrismaModule } from "./prisma/prisma.module";
 import { AuthModule } from './auth/auth.module';
 import {ConfigModule} from "@nestjs/config";
-import Joi from "joi";
+import * as Joi from 'joi';
 import {EnvConfig} from "./config/env.interface";
 
 @Module({
