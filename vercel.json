@@ -2,14 +2,15 @@
   "version": 2,
   "builds": [
     {
-      "src": "apps/backend/package.json",
+      "src": "apps/backend/dist/main.js",
       "use": "@vercel/node"
     }
   ],
   "routes": [
     {
       "src": "/(.*)",
-      "dest": "/apps/backend/api/index.ts"
+      "dest": "apps/backend/dist/main.js",
+      "methods": ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"]
     }
   ]
 }

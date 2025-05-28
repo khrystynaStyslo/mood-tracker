@@ -41,9 +41,6 @@ importers:
 
   apps/backend:
     dependencies:
-      '@codegenie/serverless-express':
-        specifier: ^4.16.0
-        version: 4.16.0
       '@nestjs/common':
         specifier: ^11.0.1
         version: 11.1.0(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)(rxjs@7.8.2)
@@ -77,9 +74,6 @@ importers:
       class-validator:
         specifier: ^0.14.2
         version: 0.14.2
-      express:
-        specifier: ^5.1.0
-        version: 5.1.0
       joi:
         specifier: ^17.13.3
         version: 17.13.3
@@ -894,10 +888,6 @@ packages:
 
   '@bufbuild/protobuf@2.3.0':
     resolution: {integrity: sha512-WK6zH4MtBp/uesX8KGCnwDDRVnEVHUvwjsigKXcSR57Oo8Oyv1vRS9qyUlSP+6KWRl5z8tNAU5qpf3QodeVYxA==}
-
-  '@codegenie/serverless-express@4.16.0':
-    resolution: {integrity: sha512-TlvAHQysphN3OW6Ziz6AD2DnN9IIy/KkKNImZwMJpwGHHqLATi/9hMg8H8VBRg2L15pGt8ad3R6j6mfvHVWrCg==}
-    engines: {node: '>=18'}
 
   '@colors/colors@1.5.0':
     resolution: {integrity: sha512-ooWCrlZP11i8GImSjTHYHLkvFDP48nS4+204nGb1RiX/WXYHmJA2III9/e2DWVabCESdW7hBAEzHRqUn9OUVvQ==}
@@ -8242,8 +8232,6 @@ snapshots:
   '@bcoe/v8-coverage@0.2.3': {}
 
   '@bufbuild/protobuf@2.3.0': {}
-
-  '@codegenie/serverless-express@4.16.0': {}
 
   '@colors/colors@1.5.0':
     optional: true
