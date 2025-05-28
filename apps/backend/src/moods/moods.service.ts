@@ -62,7 +62,7 @@ export class MoodsService {
     }
 
     removeForUser(userId: bigint, id: string) {
-        return this.prisma.mood.deleteMany({
+        return this.prisma.mood.delete({
             where: { id: BigInt(id), user_id: userId },
         });
     }

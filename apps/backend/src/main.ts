@@ -4,9 +4,12 @@ import { SerializerInterceptor } from "./common/interceptors/serializer.intercep
 import {ValidationPipe} from "@nestjs/common";
 import {AllExceptionsFilter} from "./common/filters/all-exceptions.filter";
 import {LoggingInterceptor} from "./common/interceptors/logging.interceptor";
+import {ConfigService} from "@nestjs/config";
+import {EnvConfig} from "./config/env.interface";
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  const config = app.get<ConfigService<EnvConfig>>(ConfigService);
 
   app.useGlobalInterceptors(new SerializerInterceptor());
   app.useGlobalPipes(
@@ -22,7 +25,7 @@ async function bootstrap() {
   app.useGlobalFilters(new AllExceptionsFilter());
   app.useGlobalInterceptors(new LoggingInterceptor());
 
-  await app.listen(3000);
+  await app.listen(config.get('PORT'));
 }
 
 bootstrap();

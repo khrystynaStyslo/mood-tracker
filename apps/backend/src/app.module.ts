@@ -1,18 +1,31 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { MoodsModule } from './modules/moods/moods.module';
-import { UsersModule } from './modules/users/users.module';
-import { TagsModule } from './modules/tags/tags.module';
-import { MoodsService } from "./modules/moods/moods.service";
-import { PrismaService } from './modules/prisma/prisma.service';
-import { PrismaModule } from "./modules/prisma/prisma.module";
-import {UsersService} from "./modules/users/users.service";
-import { AuthModule } from './modules/auth/auth.module';
+import { MoodsModule } from './moods/moods.module';
+import { UsersModule } from './users/users.module';
+import { TagsModule } from './tags/tags.module';
+import { PrismaModule } from "./prisma/prisma.module";
+import { AuthModule } from './auth/auth.module';
+import {ConfigModule} from "@nestjs/config";
+import Joi from "joi";
+import {EnvConfig} from "./config/env.interface";
 
 @Module({
-  imports: [PrismaModule, MoodsModule, UsersModule, TagsModule, AuthModule],
+  imports: [
+    ConfigModule.forRoot<EnvConfig>({
+      isGlobal: true,
+      envFilePath: '.env',
+      validationSchema: Joi.object({
+        NODE_ENV:       Joi.string().valid('development','production','test').default('development'),
+        PORT:           Joi.number().default(3000),
+        DATABASE_URL:   Joi.string().uri().required(),
+        JWT_SECRET:     Joi.string().min(32).required(),
+        JWT_EXPIRES_IN: Joi.string().default('1h'),
+        CORS_ORIGINS:   Joi.string().default(''),
+      }),
+    }),
+      PrismaModule, MoodsModule, UsersModule, TagsModule, AuthModule],
   controllers: [AppController],
-  providers: [AppService, MoodsService, PrismaService, UsersService],
+  providers: [AppService],
 })
 export class AppModule {}
