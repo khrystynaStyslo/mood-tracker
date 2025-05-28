@@ -1,7 +1,7 @@
 import {UsersService} from "../users/users.service";
 import {JwtService} from "@nestjs/jwt";
 import * as bcrypt from 'bcrypt';
-import {Injectable} from "@nestjs/common";
+import {ConflictException, Injectable} from "@nestjs/common";
 
 @Injectable()
 export class AuthService {
@@ -11,6 +11,11 @@ export class AuthService {
     ) {}
 
     async register(email: string, name: string, plainPassword: string) {
+        const exists = await this.usersService.findByEmail(email);
+        if (exists) {
+            throw new ConflictException('Email already in use');
+        }
+
         const salt = await bcrypt.genSalt();
         const hash = await bcrypt.hash(plainPassword, salt);
 
