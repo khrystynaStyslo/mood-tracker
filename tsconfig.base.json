@@ -1,16 +1,5 @@
 {
   "compilerOptions": {
-    "baseUrl": ".",
-    "paths": {
-      "@ai/*": [
-        "libs/ai/src/*"
-      ],
-      "@types/*": [
-        "libs/types/src/*"
-      ],
-      "@utils/*": [
-        "libs/utils/src/*"
-      ]
-    }
+    "baseUrl": "."
   }
 }
