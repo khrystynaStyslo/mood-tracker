@@ -43,12 +43,19 @@ export class MoodsService {
         });
     }
 
-    updateForUser(userId: bigint, id: string, dto: UpdateMoodDto) {
+    async updateForUser(userId: bigint, id: string, dto: UpdateMoodDto) {
         const { tagIds, ...data } = dto
         const connectTags = tagIds?.map(id => ({ id: BigInt(id) })) ?? [];
 
+        const existing = await this.prisma.mood.findFirst({
+            where: { id: BigInt(id), user_id: userId, deleted_at: null },
+        });
+        if (!existing) {
+            return null;
+        }
+
         return this.prisma.mood.update({
-            where: { id: BigInt(id), user_id: userId },
+            where: { id: BigInt(id) },
             data: {
                 ...data,
                 tags: {
@@ -61,9 +68,16 @@ export class MoodsService {
         });
     }
 
-    removeForUser(userId: bigint, id: string) {
+    async removeForUser(userId: bigint, id: string) {
+        const existing = await this.prisma.mood.findFirst({
+            where: { id: BigInt(id), user_id: userId, deleted_at: null },
+        });
+        if (!existing) {
+            return null;
+        }
+
         return this.prisma.mood.delete({
-            where: { id: BigInt(id), user_id: userId },
+            where: { id: BigInt(id) },
         });
     }
 }
