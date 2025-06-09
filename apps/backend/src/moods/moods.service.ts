@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from "../prisma/prisma.service";
 import { CreateMoodDto } from "./dto/create-mood.dto";
 import { UpdateMoodDto } from "./dto/update-mood.dto";
@@ -43,17 +43,24 @@ export class MoodsService {
         });
     }
 
-    updateForUser(userId: bigint, id: string, dto: UpdateMoodDto) {
-        const { tagIds, ...data } = dto
+    async updateForUser(userId: bigint, id: string, dto: UpdateMoodDto) {
+        const existing = await this.prisma.mood.findFirst({
+            where: { id: BigInt(id), user_id: userId, deleted_at: null },
+        });
+        if (!existing) {
+            throw new NotFoundException(`Mood with id ${id} not found`);
+        }
+
+        const { tagIds, ...data } = dto;
         const connectTags = tagIds?.map(id => ({ id: BigInt(id) })) ?? [];
 
         return this.prisma.mood.update({
-            where: { id: BigInt(id), user_id: userId },
+            where: { id: BigInt(id) },
             data: {
                 ...data,
                 tags: {
                     connect: connectTags,
-                }
+                },
             },
             include: {
                 tags: true,
@@ -61,9 +68,16 @@ export class MoodsService {
         });
     }
 
-    removeForUser(userId: bigint, id: string) {
+    async removeForUser(userId: bigint, id: string) {
+        const existing = await this.prisma.mood.findFirst({
+            where: { id: BigInt(id), user_id: userId, deleted_at: null },
+        });
+        if (!existing) {
+            throw new NotFoundException(`Mood with id ${id} not found`);
+        }
+
         return this.prisma.mood.delete({
-            where: { id: BigInt(id), user_id: userId },
+            where: { id: BigInt(id) },
         });
     }
 }
