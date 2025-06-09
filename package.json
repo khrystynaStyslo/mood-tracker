@@ -1,8 +1,7 @@
 {
   "private": true,
   "workspaces": [
-    "apps/*",
-    "libs/*"
+    "apps/*"
   ],
   "devDependencies": {
     "@nestjs/schematics": "^10.0.1",
